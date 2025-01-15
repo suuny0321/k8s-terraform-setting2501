@@ -5,5 +5,5 @@ variable "prefix" {
 
 variable "region" {
   description = "region"
-  default     = "ap-northeast-2"
+  default     = "ap-southeast-2"
 }

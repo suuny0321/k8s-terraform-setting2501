@@ -12,6 +12,18 @@ terraform {
 provider "aws" {
   region = var.region
 }
+
+# AMI 데이터 리소스 선언  !!!(수정됨)
+data "aws_ami" "amzn2" {
+  most_recent = true
+
+  owners = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-2.0.*-gp2"]
+  }
+}
 # AWS 설정 끝
 
 # VPC 설정 시작
@@ -212,7 +224,7 @@ END_OF_FILE
 }
 
 resource "aws_instance" "ec2_1" {
-  ami                         = "ami-097bf0ec147165215"
+  ami                         = data.aws_ami.amzn2.id # !!!(수정됨)
   instance_type               = "t2.large"
   subnet_id                   = aws_subnet.subnet_1.id
   vpc_security_group_ids      = [aws_security_group.sg_1.id]
@@ -248,7 +260,7 @@ resource "aws_route53_record" "record_ec2-1_vpc-1_com" {
 }
 
 resource "aws_instance" "ec2_2" {
-  ami                         = "ami-097bf0ec147165215"
+  ami                         = data.aws_ami.amzn2.id # !!!(수정됨)
   instance_type               = "t2.large"
   subnet_id                   = aws_subnet.subnet_3.id
   vpc_security_group_ids      = [aws_security_group.sg_1.id]
@@ -284,7 +296,7 @@ resource "aws_route53_record" "record_ec2-2_vpc-1_com" {
 }
 
 resource "aws_instance" "ec2_3" {
-  ami                         = "ami-097bf0ec147165215"
+  ami                         = data.aws_ami.amzn2.id # !!!(수정됨)
   instance_type               = "t2.large"
   subnet_id                   = aws_subnet.subnet_3.id
   vpc_security_group_ids      = [aws_security_group.sg_1.id]
